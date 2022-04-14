@@ -1,0 +1,26 @@
+<!-- 
+Fix for blank title fields in request when openurl has multiple title fields in url. ILLiad will choose the first one even if it's blank.
+Checks if request form has an empty LoanTitle or PhotoJournalTitle and attempts to find a non-blank title to fill it from (title, btitle, jtitle, stitle - in that order)
+Added into include_footer.html
+-->
+<script>
+// specify form title fields to look for
+let titleFields = ['LoanTitle', 'PhotoJournalTitle'];
+for (let title of titleFields) {
+	// if title field doesn't exist, continue and check for next
+	if (document.getElementById(title) == null) {
+		continue;
+	}
+	// if title field is found and is blank
+	if (document.getElementById(title).value == '') {
+		// get parameters from query string
+		let params = new URLSearchParams(window.location.search);
+		// set rTitle to first non-blank title in order listed
+		let rTitle = params.get('rft.title') || params.get('rft.btitle') || params.get('rft.jtitle') || params.get('rft.stitle');
+		
+		//console.log(rTitle);
+		// set the value of the form's title field to rTitle
+		document.getElementById(title).value = rTitle;
+	}
+}
+</script>

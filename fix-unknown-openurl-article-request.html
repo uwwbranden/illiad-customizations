@@ -1,0 +1,14 @@
+<!-- 
+Fix for ILLiad openurl article requests that have "unknown" as the genre and get directed to the Loan Request form
+Replaces "unknown" with "article" and redirects to new url.
+Added into <head> of LoanRequest.html so the redirect can happen before the pages loads
+-->
+<script>
+// get parameters from query string
+let params = new URLSearchParams(window.location.search);
+// check if genre = unknown and an article title is included in the request
+if (params.get('rft.genre') == 'unknown' && params.get('rft.atitle') != '') {
+	// redirect to article request form
+	window.location.replace(window.location.href.replace('rft.genre=unknown', 'rft.genre=article'));
+}
+</script>
